@@ -1,8 +1,12 @@
 ---
 layout: post
 title: MapReduce 学习笔记
-categories:[Tech]
-tags: [Hadoop, MapReduce, Cookbook ]
+categories:
+    - Tech
+tags: 
+    - Hadoop
+    - MapReduce
+    - Cookbook
 comments: yes
 ---
 # Background
