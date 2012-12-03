@@ -1,4 +1,5 @@
 ---
+date: 2012-12-03 09:00:00
 layout: post
 title: MapReduce 学习笔记
 categories:
@@ -9,6 +10,7 @@ tags:
     - Cookbook
 comments: yes
 ---
+
 # Background
 1. "Big Data" is a fact of the world, therefor an issue that real-world systems must grapple with.
     * Gathering, analyzing, monitoring, filtering, searching, or organizing web content.
