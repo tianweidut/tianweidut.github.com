@@ -30,7 +30,7 @@ view Function 将HttpRequest作为第一个参数，将其余能在正则表达�
 5. 如果没有匹配，或者在该view function处理中发生异常，Django将触发[Error-handling View](https://docs.djangoproject.com/en/1.4/topics/http/urls/#error-handling)机制，比如抛出404或500错误。
 
 ### example
-1. Simple Example
+**Simple Example**
 {% highlight python %}
 from django.conf.urls import patterns, url, include
 
@@ -49,18 +49,18 @@ urlpatterns = patterns('',
     {% endhighlight%}
     * 当request是/articles/2012时，不会match，因为缺少'/'
 
-2. Named Groups
+**Named Groups**
 在Python Regular Expressions中，正则组用(?P<name>pattern) 表示。
     * name表示组名
     * pattern表示匹配模式
-重写上面例子，
-
+    * pattern提取的参数是string,需要做类型转化。
+重写上面例子
 {% highlight python %}
 urlpatterns = patterns('',
 (r'^articles/(?P<year>\d{4})/$','news.views.year_archive'),
 (r'^articles/(?P<year>\d{4})/(?P<month>\d{2})$','news.views.month'),
 )
-{% endhighlight%}
+{% endhighlight %}
 
 **Notes**
     * 其中year和month分别表示function中的变量名称
@@ -69,7 +69,7 @@ urlpatterns = patterns('',
     {% highlight python %}
         news.views.year_archive(request,year='2012')
         news.views.month(request,year='2012',month='12')
-    {% endhighlight%}
+    {% endhighlight %}
 
     * 这样做的优点显而易见，变量摆脱了顺序问题。
 
@@ -83,6 +83,60 @@ urlpatterns = patterns('',
     * patterns(prefix,pattern_desc,...)
         * prefix前缀，一组模式，最后返回list
         * [Prefix](https://docs.djangoproject.com/en/1.4/topics/http/urls/#the-view-prefix)
+        * patterns() 是一个函数，最大接收255个参数，但可以用python的list相加的方式处理.
+        {% highlight python %}
+        patterns = patterns('',)
+        patterns += patterns('',)
+        {% endhighlight %}
+    * url(regex,view,kwargs=None, name=None, prefix='')
+        * nameing URL patterns 用同一个view function处理不同的URL 是一个常见的需求。
+            {% highlight python %}
+            urlpatterns = patterns('',
+                (r'^archive/(\d{4})/$',archive,name='full-archive'),
+                (r'^archive-summary/(\d{4})/$',archive,{'summary':True},name='arch-summary'),
+                )
+            {% endhighlight %}
+        * 当在模板中可以用 {% url arch-summary 1990 %} , {% url full-archive 1099 %} 来实现分别调用
+
+    * include(<module or pattern_list>)
+        * 导入其他模块，或URLConf的patterns list变量.
+
+### Error-handling
+    * 自己定制错误处理[Customizing error views](https://docs.djangoproject.com/en/1.4/topics/http/views/#customizing-error-views)
+    * handler403 Permissions Issue. 通常由CSRF产生. django.views.defaults->permission_denied
+    * handler404 Not Found -> django.view.defaults.page_not_found
+    * handler500 Server Error ->  django.view.defaults.server_error
+
+### Including other URLconfs
+    * 用于提交给其他木块的URLconfs进行进一步处理。
+    * 样式如下：
+        {% highlight python %}
+        urlpatterns = patterns('', (r'^comments/',include('django.contrib,comments.urls')))
+        {% endhighlight %}
+    * 没有$结束符，并且用include函数，包含其他文件的patterns list变量，这样有利于分层管理。 
+
+### Defining URL namespace
+    * 当给一个应用程序部署多个实例时，使用namespace
+    * URL namespace 来自两个部分：
+        * application namespace 
+        * instance namespace
+    * (r'^help/',include('apps.help.urls',namespace='foo',app_name='bar')),同时也可以导入django object
+
+### Passing extra options to view function
+    * 以Python Dict的形式传递参数
+    * 实例
+        {% highlight python %}
+            urlpatterns = patterns('blog.views',
+            (r'^blog/(?P<year>\d{4})/$','year_archive',{'foo':'bar'}),)
+        {% endhighlight %}
+    * 在函数中就会调用额外的参数。这种技术用在syndication framework中传递metadata和views的options参数。
+
+### Passing extra options to include()
+    * 与view function 类似，参见[这里](https://docs.djangoproject.com/en/1.4/topics/http/urls/#the-view-prefix)
+
+### Passing calling objects instead of strings
+    * Django可以用更加自然的方法，用Python的object代替字符串实现调用。
+
 -------------------------------------
 ## View Functions
 
