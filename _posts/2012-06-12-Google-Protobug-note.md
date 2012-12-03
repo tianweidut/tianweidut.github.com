@@ -1,12 +1,8 @@
 ---
 layout: post
 title: Google Protobuf 使用笔记
-categories:
-- Tech
-tags:
-- Google
-- Open Source
-- Networks Tools
+categories:[Tech]
+tags: [Google, Open Source, Networks Tools ]
 comments: yes
 ---
 
