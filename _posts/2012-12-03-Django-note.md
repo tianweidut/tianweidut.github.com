@@ -39,6 +39,7 @@ urlpatterns = patterns('',
     (r'^articles/(\d{4})/(\d{2})/(\d+)/$','news.details'),
 )
 {% endhighlight%}
+
 **Notes**:
     * 当从URL获取值时，仅需加入()即可,如(\d{4}),(\d+);
     * r 代表正则表达式，符合Python的正则表达式规则;
@@ -47,24 +48,29 @@ urlpatterns = patterns('',
         news.details(request,'2012','12')
     {% endhighlight%}
     * 当request是/articles/2012时，不会match，因为缺少'/'
+
 2. Named Groups
 在Python Regular Expressions中，正则组用(?P<name>pattern) 表示。
     * name表示组名
     * pattern表示匹配模式
 重写上面例子，
+
 {% highlight python %}
 urlpatterns = patterns('',
 (r'^articles/(?P<year>\d{4})/$','news.views.year_archive'),
 (r'^articles/(?P<year>\d{4})/(?P<month>\d{2})$','news.views.month'),
 )
 {% endhighlight%}
-**note**
+
+**Notes**
     * 其中year和month分别表示function中的变量名称
     * 分别对应如下
+    
     {% highlight python %}
         news.views.year_archive(request,year='2012')
         news.views.month(request,year='2012',month='12')
     {% endhighlight%}
+
     * 这样做的优点显而易见，变量摆脱了顺序问题。
 
 ### URLConf Search 
