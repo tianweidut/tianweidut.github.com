@@ -241,11 +241,43 @@ QueryDict实现了多有的标准字典的方法，是subclass
   * QueryDict.__getitem__(key): Raises django.utils.datastructures.MultiValueDictKeyError
   * QueryDict.__setitem__(key, value): 只有copy后才能更改。
   * QueryDict.__contains__(key)
-  * QueryDict.get(key, default): default为该值不存在时默认返回值。
+  * QueryDicesponseNoesponseForbiddenfault为该值不存在时默认返回值。
   * QueryDict.setdefault(key, default)
   * QueryDict.update(other_dict)
   * QueryDict.urlencode([safe])
 
+## HTTPResponse objects
+HttpResponse由Django自动创建，每个view都需要有HttpResponse。
+### 作用：
+  * Passing strings: 典型应用是向网页中传递字符串。
+    example:
+    {% highlight python  %}
+        from django.http import HttpResponse
+        response = HttpResponse("Here's the text of the web page")
+        response = HttpResponse()
+        response.write("Add test text")
+        response.write("Add another text")
+    {% endhighlight %}
+  * Passing iterators: 通过iterators替代硬编码的字符串。
+  * Setting headers: 设置Http的包头，同时head中不能包含newlines,试图引入CR 或 LF的会抛出BadHeaderError错误。
+### Attributes:
+  * HttpResponse.content: unicode
+  * HttpResponse.status_code： [code](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10)
+### Methods:
+  * HttpResponse.__init__(content='', mimetype=None, status=200, content_type=DEFAULT_CONTENT_TYPE): content必须是一个iterator或string。
+  * 包头设置：
+    * HttpResponse.__setitem__(header, value)
+    * HttpResponse.__delitem__(header)
+    * HttpResponse.__getitem__(header) 
+    * HttpResponse.has_header(header)
+  * HttpResponse.set_cookie(), 具体参见[这里](http://docs.djangoproject.com/en/1.4/ref/request-response/),类似的也有HttpResponse.set_signed_cookie()
+  * HttpResponse.write(content): file-like 
+  * HttpResponse.flush()
+  * HttpResponse.tell()
+### Subclass:
+  * HttpResponseRedirect: 重定向绝对路径，相对路径和http status code.
+  * 代替状态码返回： HttpResponseNotModified(403),  HttpResponseBadRequest(400), HttpResponseNotFound(404), HttpResponseForbidden(403), HttpResponseNotAllowed(405),HttpResponseServerError(500)
+  
 ## TemplateResponse objects
 
 -------------------------------------
