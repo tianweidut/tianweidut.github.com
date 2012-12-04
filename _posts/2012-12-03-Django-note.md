@@ -176,10 +176,76 @@ django.Shortcuts 集合提供MVC的多种类层次抽象。
 
 -------------------------------------
 ## Decorators
+Django 和 Python中通过@，即decorators实现某些HTTP特性，比如用户验证等。
+  * Allowed HTTP methods
+    * 控制HTTP的请求方法, 在django.views.decorators.http 中,当发生错误时返回django.http.HttpResponseNotAllowed
+    * example:
+     {% highlight python  %}
+        from django.views.decorators.http import require_http_methods
+        @require_http_methods(["GET","POST"])  #需要大写
+        def my_view(request):
+            pass
+     {% endhighlight %}
+    * 其他: require_GET(), require_POST(), require_safe()
+  * [Conditional View Processing](https://docs.djangoproject.com/en/1.4/topics/http/decorators/)
+  * [Gzip Compression](https://docs.djangoproject.com/en/1.4/topics/http/decorators/)
+  * [Vary headers](https://docs.djangoproject.com/en/1.4/topics/http/decorators/)
 
 -------------------------------------
 # Reference of View Layer
-## Request/response objects
+Django 通过Request和Response对象来传递状态。当一个页面被请求，Django将会创建HttpRequest对象，其中包含request的metadata。Django载入相应的View处理函数或类，
+并将HttpRequest作为第一个参数，view function返回HttpResponse对象。 HttpRequest 和 HttpResponse 在django.http中定义。
+## Request objects (HttpRequest objects)
+### Attributes
+所有的属性都是只读的。session是一个著名的只读异常。
+  * HttpRequest.body: byte string. 当处理binary images 和 xml payload时使用。
+  * HttpRequest.path: 返回完整的请求路径，不包括domain。
+  * HttpRequest.path_info: 与path功能一致，只是去除prefix。
+  * HttpRequest.method: 大写的'GET','POST' 
+  * HttpRequest.encoding: None,表示DEFAULT_CHARSET。
+  * HttpRequest.GET:返回dict-like, 参见[QueryDict](https://docs.djangoproject.com/en/1.4/ref/request-response/#django.http.QueryDict)
+  * HttpRequest.POST: 返回dict-like, 参见[QueryDict](https://docs.djangoproject.com/en/1.4/ref/request-response/#django.http.QueryDict)
+  * HttpRequest.COOKIES: 包含所有的cookies.
+  * HttpRequest.FILES: 包含所有的uploaded files. 其中FILES中的name从
+    {% highlight html %}
+      <input type='file',name=''/>
+    {% endhighlight %}
+   中获取,每个value从[UploadFile](https://docs.djangoproject.com/en/1.4/ref/request-response/#django.http.UploadedFile)。注意FILES只有当请求的POST方法，并且
+   form中有enctype="multipart/form-data"时，才有具体的数值，否则FILES为None。
+  * HttpRequest.META: 包含了所有的HTTP headers. 包括CONTENT_LENGTH,CONTENT_TYPE, HTTP_ACCEPT_ENCODING, HTTP_ACCEPT_LANGUAGE , HTTP_HOST, HTTP_REFERER, HTTP_USER_AGENT, 
+  HTTP_USER_AGENT, REMOTE_ADDR, REMOTE_HOST, REMOTE_USER, REQUEST_METHOD ,SERVER_NAME, SERVER_PORT。
+  * HttpRequest.user: 是django.contrib.auth.model.User的object，反映的是当前的logged-in USER。当前用户没有登陆，会被设置成django.contrib.autg.models.AnonymousUser. 
+  可以通过request.user.is_authenticated()来判断。user只有当AuthenticationMiddleware中间件被激活是才可用。关于user，参见[User authentication in Django](https://docs.djangoproject.com/en/1.4/topics/auth/)，Django的User是其精髓。
+  * HttpRequest.session: readable , writeable, dick-like
+  * HttpRequest.urlconf: 不是Django自身定义的，由中间件进行定义和激活。具体参见[How Django processes a request](https://docs.djangoproject.com/en/1.4/topics/http/urls/#how-django-processes-a-request)
+### Methods:
+  * HttpRequest.get_host()
+  * HttpRequest.get_full_path(): 包括an appended query string.
+  * HttpRequest.build_absolute_uri(location): 返回绝对地址包括domain.
+  * HttpRequest.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)
+  * HttpRequest.is_secure(): HTTPS的判断
+  * HttpRequest.is_ajax(): XMLHttpRequest
+  * HttpRequest.read(size=None), HttpRequest.readline(), HttpRequest.readlines(), HttpRequest.readlines()
+## UploadFile objects
+### Attributes
+  * UploadedFile.name 
+  * UploadedFile.size
+### Methods:
+  * UploadedFile.chunks(chunk_size=None): 返回一个generator和yields来反映序列化的文件数据。
+  * UploadedFile.read(num_bytes=None)： 从文件中读取bytes.
+
+## QueryDict Objects
+QueryDict是不可改变的，除非用copy。
+### Methods:
+QueryDict实现了多有的标准字典的方法，是subclass
+  * QueryDict.__getitem__(key): Raises django.utils.datastructures.MultiValueDictKeyError
+  * QueryDict.__setitem__(key, value): 只有copy后才能更改。
+  * QueryDict.__contains__(key)
+  * QueryDict.get(key, default): default为该值不存在时默认返回值。
+  * QueryDict.setdefault(key, default)
+  * QueryDict.update(other_dict)
+  * QueryDict.urlencode([safe])
+
 ## TemplateResponse objects
 
 -------------------------------------
