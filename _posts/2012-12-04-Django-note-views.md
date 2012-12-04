@@ -259,7 +259,7 @@ HttpResponse由Django自动创建，每个view都需要有HttpResponse。
         response.write("Add another text")
     {% endhighlight %}
   * Passing iterators: 通过iterators替代硬编码的字符串。
-  * Setting headers: 设置Http的包头，同时head中不能包含newlines,试图引入CR 或 LF的会抛出BadHeaderError错误。
+  * SeesponseServerErrorHttp的包头，同时head中不能包含newlines,试图引入CR 或 LF的会抛出BadHeaderError错误。
 ### Attributes:
   * HttpResponse.content: unicode
   * HttpResponse.status_code： [code](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10)
@@ -279,22 +279,35 @@ HttpResponse由Django自动创建，每个view都需要有HttpResponse。
   * 代替状态码返回： HttpResponseNotModified(403),  HttpResponseBadRequest(400), HttpResponseNotFound(404), HttpResponseForbidden(403), HttpResponseNotAllowed(405),HttpResponseServerError(500)
   
 ## TemplateResponse objects
+标准的HttpResponse是静态的结构，在创建时需要提供pre-rendered的content。显然这不符合编程的需要，常见的是通过decorators，middleware对view产生的结果进行进一步的修改。
+TemplateResponse可以动态的构造response,最终的response只有当需要时才会被返回。
+### SimpleTemplateResponse:
+  * SimpleTemplateResponse.template_name: 可赋值Template object, template path 和一组Template path。  
+  * SimpleTemplateResponse.context_data： dict 或者 context object.
+  * SimpleTemplateResponse.is_rendered, SimpleTemplateResponse.rendered_content
+  * SimpleTemplateResponse.__init__(): template 名称，context 需要的是一组value的dict，status code, content_type或minetype.
+  * SimpleTemplateResponse.resolve_context(context): 将context数据转化为context instance。
+  * SimpleTemplateResponse.resolve_template(template): 解析模板用来进行rendering。
+  * SimpleTemplateResponse.add_post_render_callback(): 当rendering完成时，进行回调函数的调用，比如caching等。当返回值不为空时，将会替代原来的返回值。
+  * SimpleTemplateResponse.render()： 该函数只有第一次call时起作用，当sequence调用时，只是第一次起作用。
 
--------------------------------------
-# File uploads of Django
-## File objects
-## Storage API
-## Managing Files
-## Custom Storage
+### TemplateResponse:
+  * 是SimpleTemplateResponse的子类，使用RequestContext代替Context。
+  * TemplateResponse.__init__(): 与SimpleTemplateResponse一致。
+  * Rendering Process:  rendering process将最终的byte stream由服务器端发送到client端。
+    * 当调用SimpleTemplateResponse.render()时，TemplateResponse instance进行准确的rendering。
+    * 当response的content由response.content指定时，发生rendering。
+    * 在template response middleware传递后，在response middleware传递前，发生rendering。 
+  * Post-render callbacks: rendering后的调用。
 
 -------------------------------------
 # Generic views
+抽象一些常见的，通用的任务，比如一组objects的显示。Django使用generic view处理如下的场景：
+  * 执行简单的任务：重定向网页，渲染制定的template。
+  * 显示一个单一对象的list和details，比如使用TalkListView, RegisteredUserListView等。
+  * 显示时间对象，比如文章的日期,associated detail, lastest等。
+  * 允许用户在有权限和没有权限条件下创建，修改，删除一个对象。
 ## Built-in generic views
-
--------------------------------------
-# Advanced of View Layer
-## Generating CSV
-## Generating PDF
 
 -------------------------------------
 # Middleware of View Layer
