@@ -148,9 +148,31 @@ urlpatterns = patterns('',
 
 -------------------------------------
 ## View Functions
-
+简单来说是处理web Request请求，返回web response.
+  * 404 返回, 会自动调用404错误页面进行响应。
+    * Django 提供了404Exception
+      {% highlight python %}
+        from django.http import Http404
+        raise Http404
+      {% endhighlight %}
+    * 系统自动调用在根目录的404.html, 但可以在URLConf中通过给handler404 = 'var' 指定特殊的View
+  * 403,500 错误处理相同。
 -------------------------------------
 ## Shortcuts
+django.Shortcuts 集合提供MVC的多种类层次抽象。
+  * render: 根据一个给定的模板和相应的变量，进行HttpResponse来rendered text.
+    * requirements: request, template_name  
+  * render_to_response
+    * requirements: template_name
+    * return render_to_response（'my_templates.html',my_data_dictionary,context_instance=RequestContext(request)
+  * redirect: 返回一个HttpResponseRedirect
+    * model: 模型的get_absolute_url()函数会被调用。
+    * view name: 会需要额外参数urlresolvers.reverse()。
+    * URL 地址。
+  * get_object_or_404:
+    * 调用给定模型的get()函数，会抛出Http404代替DoesNotExist.
+  * get_list_or_404
+    * 调用模型的filter(),会抛出Http404代替Empty
 
 -------------------------------------
 ## Decorators
