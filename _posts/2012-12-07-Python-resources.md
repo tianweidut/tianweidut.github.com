@@ -24,6 +24,7 @@ comments: yes
   * [Coroutines via Enhanced Generators](Coroutines via Enhanced Generators)
   * [Python Tips, Tricks, and Hacks ](http://www.siafoo.net/article/52)
   * [PEP20 Examples](http://artifex.org/~hblanks/talks/2011/pep20_by_example.py.txt)
+  * [Hiden features of Python](http://stackoverflow.com/questions/101268/hidden-features-of-python)很少被了解但很有用的特性。
 
 -------
 

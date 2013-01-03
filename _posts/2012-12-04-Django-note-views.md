@@ -134,7 +134,7 @@ urlpatterns = patterns('',
   * URL namespace 来自两个部分：
       * application namespace 
       * instance namespace
-  * (r'^help/',include('apps.help.urls',namespace='foo',app_name='bar')),同时也可以导入django object
+  * (\r'^help/',include('apps.help.urls',namespace='foo',app_name='bar')),同时也可以导入django object
 
 ### Passing extra options to view function
 
@@ -160,12 +160,12 @@ urlpatterns = patterns('',
 简单来说是处理web Request请求，返回web response.
 
   * 404 返回, 会自动调用404错误页面进行响应。
-    * Django 提供了404Exception
+   * Django 提供了404Exception
       {% highlight python %}
         from django.http import Http404
         raise Http404
       {% endhighlight %}
-    * 系统自动调用在根目录的404.html, 但可以在URLConf中通过给handler404 = 'var' 指定特殊的View
+   * 系统自动调用在根目录的404.html, 但可以在URLConf中通过给handler404 = 'var' 指定特殊的View
   * 403,500 错误处理相同。
 -------------------------------------
 ## Shortcuts
@@ -356,6 +356,30 @@ TemplateResponse可以动态的构造response,最终的response只有当需要�
   * 显示一个单一对象的list和details，比如使用TalkListView, RegisteredUserListView等。
   * 显示时间对象，比如文章的日期,associated detail, lastest等。
   * 允许用户在有权限和没有权限条件下创建，修改，删除一个对象。
+
+## Simple Usage
+  * Class-based generic views可以通过subclass 和想URLConf传递参数的方法实现。
+  * 重写template_name 或 get_context_data，继承TemplateView类。
+  * 实例：
+  {% highlight python %}
+     from django.views.generic import TemplateView
+     class AboutView(TemplateView):
+        template_name = "about.html"
+     
+     """In URLconf"""
+     urlpatterns = patterns('',r'^about/',AboutView.as_view(),)
+  {% endhighlight %}
+
+## Generic views of objects
+  * object_list, 实际编程中可以使用context_object_name属性，指定object_list的别名。
+  {% highlight python %}
+  urlpatterns = patterns('',(r'^publishers/$',
+    ListView.as_view(model=Publisher,
+    context_object_name='publisher_list')))
+  {% endhighlight %}
+  * DetailView -> get_context_data() 重写该方法进行Generic的扩展。
+  * viewing the subsets of objects: 对object_list施加query_set属性。可以方便的定义filtered list，
+  * Decorating the class: 例如加入login_required,permission_required等
 
 ## Built-in generic views
 

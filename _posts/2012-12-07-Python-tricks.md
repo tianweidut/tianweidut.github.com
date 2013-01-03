@@ -40,6 +40,29 @@ reduce的第一个参数func为一个二元参数；func将作用于seq的每一
         f = lambda N:reduce(lambda x,y:x*y, xrange(1,N+1))
         print f(5) {% endhighlight %}
 
+## list comprehensions(列表推导式)
+
+举例:
+    
+    {% highlight python %}
+        l = [i for i in range(10) if i % 2 == 0] {% endhighlight %}
+
+优点：
+  * 不需要使用计数器
+  * 不要重复确定列表的某个元素要进行使用，省去索引过程，更加高效
+  * Python对其进行特殊的优化，执行效率非常高
+  
+## enumerate(简洁索引)
+
+举例：
+    
+    {% highlight python %}
+        # 注意并没有声明 i 为0和对其进行迭代累加
+        seq = ["one", "two", "three"]
+        for i, element  in enumerate(seq):
+            seq = '%d: %s' % (i, element)
+    {% endhighlight %}
+
 ------
 
 # lambda表达式
@@ -90,3 +113,65 @@ macro类似。可以将lambda赋予外部变量或指针，可以接受参数，
         d = 'test'
         a = 'result:%s'%d --> result:test
         a = 'result:%r'%d --> result:'test' {% endhighlight %} 
+
+# Python Package
+
+## __init__.py:
+  * __init__.py 掌握这Python的包机制，控制包的导入行为
+  * 当为空时，仅仅导入包，不做额外的操作。
+  * 当不为空时，会在该包导入时执行相关内容。
+     * __all__ : 将其列表中的子模块和子包导入到当前作用域中。可以突破文件系统限制。如果不定义__all__，无法实现all import。参见[这里](http://docs.python.org/2/tutorial/modules.html#importing-from-a-package)。
+     使用时，代码如下
+    {% highlight python  %}
+        __all__ = ['pack1','module1','module2']
+        # import all modules
+        from testpack import *
+    {% endhighlight %}
+    
+------
+
+# 异常与with
+
+## with...as 
+
+替代try...finally语句，实现发生错误时候，清理资源，应用在一下场合：
+* 关闭一个文件
+* 释放一个锁
+* 创建一个临时的代码补丁
+* 在特殊环境中运行受保护的代码
+简单的说就是能在**代码块的前和后调用一些代码**提供了方便。举例：
+    
+    {% highlight python %}
+        with file('/etc/hosts') as hosts:
+            for line in hosts:
+                print line {% endhighlight %}
+
+当类实现with协议，即实现__exit__和__enter__两个函数时，就可以使用with。
+举例：
+    
+    {% highlight python %}
+        Class Context(object):
+            def __enter__(self):
+                print "enter init"
+            def __exit__(self, exception_type, exception_value, 
+                        exception_traceback):
+                # 当发生错误时，在三个参数会被填充，默认为None。
+                # 当with中抛出异常，context不应该再次抛出异常，应该进行处理。 
+                print "exit value"
+                if exception_type is None:
+                    print "None exception"
+                else:
+                    print "with an error  (%s) " % exception_value
+        with Context() as c:
+            print "out of the context"
+            raise TypeError("here is a bug!")
+    {% endhighlight %}
+
+上段代码执行顺序如下：
+
+1. 执行Context()表达式，返回Content Manager子类给c，Content Manager规定__enter__和__exit__。
+2. 调用c的__enter__方法
+3. 执行with中的内容
+4. 如果with中代码抛出异常，执行c的__exit__函数，同时传递了异常的类型，值和调用堆栈。
+5. 若with中未抛出异常，执行__exit__函数，不传递参数。
+
