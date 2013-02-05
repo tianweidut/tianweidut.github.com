@@ -130,6 +130,27 @@ macro类似。可以将lambda赋予外部变量或指针，可以接受参数，
     
 ------
 
+# 常见陷阱
+
+## tuple陷阱
+
+* 良好的写作方式是（item1,item2,） 
+* 当单个元素是若写成（item1）就各种错误，所以一定要（item1,）明确的告诉这是元组
+
+------
+
+# Design Pattern in Python
+
+## Signleton
+
+[__new__实现单例](http://www.cnblogs.com/lovemo1314/archive/2011/05/03/2034927.html)
+
+[metaclass实现单例](http://code.activestate.com/recipes/102187-singleton-as-a-metaclass/)
+
+[多种方法](http://my.oschina.net/u/140191/blog/51295)
+
+------
+
 # 异常与with
 
 ## with...as 
@@ -175,3 +196,17 @@ macro类似。可以将lambda赋予外部变量或指针，可以接受参数，
 4. 如果with中代码抛出异常，执行c的__exit__函数，同时传递了异常的类型，值和调用堆栈。
 5. 若with中未抛出异常，执行__exit__函数，不传递参数。
 
+------
+
+# unknow features
+
+## __new__ 与 __init__
+
+* new的优先级更高一些
+* __new__ 一般用于继承内置类，返回的是一个对象，可以应用在单例模式中；相当与JAVA里面的构造器
+* __init__ 只做初始化工作，没有返回值。
+* 如果重写了__new__，而在__new__中没有调用__init__,则__init__将不起作用。
+* 参考[这里](http://docs.python.org/reference/datamodel.html#object.__new__)，还有[这里](http://www.cnblogs.com/lovemo1314/archive/2011/05/03/2034927.html)
+
+------
+(to be continued...)

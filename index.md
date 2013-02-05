@@ -1,5 +1,5 @@
 ---
-title: Love life!
+title: Keep Calm and Code On!
 layout: page
 ---
 
