@@ -22,34 +22,26 @@ comments: yes
 ## Git 快速使用
 
 ### 最简单的使用
- * 初始化Git本地数据库
- {% highlight python%}
-    git init {% endhighlight%}
+ * 初始化Git本地数据库   
+   **git init**
  
- * 增加修改文件
- {% highlight python%}
-    git add . {% endhighlight%}
-
-  * . 增加当前目录下所有子文件和子目录
-  * 可以在具体文件夹下增加，不一定在根目录执行这个命令
+ * 增加修改文件  
+   **git add .**
+     * . 增加当前目录下所有子文件和子目录
+     * 可以在具体文件夹下增加，不一定在根目录执行这个命令
  
- * 本地提交
- {% highlight python%}
-    git commit -m "some code comments" {% endhighlight%}
-
-  * 上面的提交是将add的内容，加入注释后提交到本地代码仓库中
-  * 若加参数a是将所有的代码更改都加入到代码仓库中，即使不在add中添加，这个要注意，尽量少用这个参数，容易造成change set不明晰。
+ * 本地提交  
+   **git commit -m "some code comments"**
+     * 上面的提交是将add的内容，加入注释后提交到本地代码仓库中
+     * 若加参数a是将所有的代码更改都加入到代码仓库中，即使不在add中添加，这个要注意，尽量少用这个参数，容易造成change set不明晰。
  
- * push
- {% highlight python%}
-    git push {% endhighlight%}
+ * push  
+   **git push**
+     * 将所有代码库提交的都push到远端代码仓库中,同时分支也是默认的
+     * origin branch 是指具体提交到那个分支，比如**git push origin master** 提交到主分支 
 
-  * 将所有代码库提交的都push到远端代码仓库中,同时分支也是默认的
-  * origin branch 是指具体提交到那个分支，比如**git push origin master** 提交到主分支 
-
- * pull 获取服务端最新的代码
- {% highlight python%}
-    git pull {% endhighlight %}
+ * pull 获取服务端最新的代码  
+   **git pull**
   
 
 至此，完成了最基本的代码提交与管理，可以进行最简单的push和pull了，是不是非常简单 *_*
