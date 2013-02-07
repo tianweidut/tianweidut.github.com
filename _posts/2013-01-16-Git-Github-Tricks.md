@@ -76,24 +76,24 @@ comments: yes
 
 ### 版本控制
  * 查看历史 
-  * git log 基本提交历史
-  * git log -p 详细提交，包括代码文件变更情况（时间，版本，人员）
+   * git log 基本提交历史
+   * git log -p 详细提交，包括代码文件变更情况（时间，版本，人员）
  
  * 查看当前工作
   * **git diff**
  
  * 会滚操作
-  * **git revert 版本hash编号** 还原一个版本的修改
-  * **git reset 版本号**  将当前的工作目录完全回滚到指定的版本号 （全部回滚）
+   * **git revert 版本hash编号** 还原一个版本的修改
+   * **git reset 版本号**  将当前的工作目录完全回滚到指定的版本号 （全部回滚）
 
  * tag 标签
-  * **git tag revert_version hashcode**
-  * 想查看该版本时，就可以使用 revert_version标签名，而不是哈希值了
+   * **git tag revert_version hashcode**
+   * 想查看该版本时，就可以使用 revert_version标签名，而不是哈希值了
 
  * 缓存当前工作区间
-  * **git stash** 将当前未条件到本地和服务器的代码推入到git的栈中，此时工作区间和上一次提交的内容是完全一样的
-  * **git stash apply** 可以将前一半的工作应用回来。 同时支持栈的多次提取
-  * **git stash clear** 清空栈
+   * **git stash** 将当前未条件到本地和服务器的代码推入到git的栈中，此时工作区间和上一次提交的内容是完全一样的
+   * **git stash apply** 可以将前一半的工作应用回来。 同时支持栈的多次提取
+   * **git stash clear** 清空栈
 
 ### branch 分支
 git 最强的功能就是创建分支与合并分支，进行快速干净的开发。
