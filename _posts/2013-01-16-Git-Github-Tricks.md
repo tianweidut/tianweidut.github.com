@@ -23,6 +23,7 @@ comments: yes
 
 ## Git 快速使用
 
+
 ### 基本安装
  * ubuntu : sudo apt-get install git git-core
  * windows: [msysgit](https://code.google.com/p/msysgit/)
@@ -64,6 +65,7 @@ comments: yes
 ------
 
 ## 实用技巧
+
 
 ### git 使用配置
  * git config –global user.name “tianwei”
@@ -108,6 +110,7 @@ git 最强的功能就是创建分支与合并分支，进行快速干净的开�
 
 ------
 ## 高级技巧
+
 
 ### 如何从版本库中永久删除文件?
 
