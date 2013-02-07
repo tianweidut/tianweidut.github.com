@@ -22,7 +22,7 @@ comments: yes
 ------
 
 ## Git 快速使用
-
+   
 
 ### 基本安装
  * ubuntu : sudo apt-get install git git-core
@@ -97,6 +97,7 @@ comments: yes
 
 ### branch 分支
 git 最强的功能就是创建分支与合并分支，进行快速干净的开发。
+
  * 创建分支 **git branch tianwei**
  * 查看分支 **git branch**
  * 查看远程分支 **git branch -r**
