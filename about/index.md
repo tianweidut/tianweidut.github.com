@@ -5,23 +5,26 @@ comments: no
 ---
 
 # Hi,I'm tianwei
-  - I'm a MSc at School of Innovation Experiment, Dalian University of Technology. 
-  - I was an intern at Microsoft ASTC.
-  - I also was an intern at Erisson China.
+  - I'm a [System Software Engineer](http://jobs.douban.com/#job-xt) @ [Douban](http://www.douban.com/) platform group. Now focus on Douban App Engine,
+  which is a private cloud (2013.7 - now).
+  - I graduated with a master's degree in Computer Science at School of Innovation Experiment, Dalian University of Technology (2006-2013).
+  - I was an intern at Microsoft ASTC 2012.7 - 2012.10, worked for Bing Desktop Group.
+  - I also was an intern at Erisson China 2012.5 - 2012.7.
   - I have successfully participated in Google Summer of Code 2012, [UMIT-OpenMonitor](http://dev.umitproject.org/projects/umitproject/wiki). 
   - I am an Open Source Developer for [OpenMonitor](https://github.com/umitproject)
-  - I will start my career as a [System Engineer](http://jobs.douban.com/#job-xt) @ [Douban](http://www.douban.com/) on July, 2013.
 
-# Interesting
+# Interesting and skills
 - Python, ANSI C, Common Lisp 
-- Open Source, Ubuntu, VIM
+- Open Source, Ubuntu, Mac OSX, VIM
 - Distributed System, Hadoop, Spark, Dpark, Storm
 - TCP/IP, Network, Security
-- Django, Twisted, Nginx 
+- Django, Twisted, Quixote
+- Nginx, Graphite, Nagios
+- Paas, App Engine
 - graceful, simple things
 
 # Footmark
-- [GitHub](https://github.com/tianweidut) I use it heavily, every day.
+- [GitHub](https://github.com/tianweidut)
 - [Douban](http://www.douban.com/people/tianweidut/)
 - [Linkedin](cn.linkedin.com/in/liutianwei) 
 - [Stackoverflow](http://stackoverflow.com/users/619640/tianwei) 

@@ -2,7 +2,7 @@
 @media screen {
 .container {
 width:auto;
-padding:20px;
+padding:15px;
 }
 
 h1 {
@@ -78,7 +78,7 @@ border-bottom:1px dashed #bbb;
 margin-left:auto;
 margin-right:auto;
 zoom:1px;
-width:700px;
+width:900px;
 }
 
 p {

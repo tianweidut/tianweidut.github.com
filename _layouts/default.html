@@ -14,32 +14,21 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        <h1>{{ page.title }}</h1>
+          <h1>{{ page.title }}</h1>
         </header>
         <nav>
-        <span><a title="home page" class="" href="{{ site.url }}/">home</a></span>
-        <span><a title="about" class="" href="{{ site.url }}/about/">about</a></span>
-        <span><a title="categories" class="" href="{{ site.url }}/categories/">categories</a></span>
-        <span><a title="tags" class="" href="{{ site.url }}/tags/">tags</a></span>
-        <span><a title="links" class="" href="{{ site.url }}/links/">links</a></span>
+          <span><a title="home page" class="" href="{{ site.url }}/">home</a></span>
+          <span><a title="code" class="" target="_blank" href="https://github.com/tianweidut">Code</a></span>
+          <span><a title="readings" class="" href="{{ site.url }}/readings/">readings</a></span>
+          <span><a title="about" class="" href="{{ site.url }}/about/">about</a></span>
         </nav>
         <article class="content">
-        {{ content }}
+          {{ content }}
         </article>
       </div>
 	<footer>
-  		<p><small><a href="https://github.com/tianweidut/tianweidut.github.com">Designed</a> by <a href="http://tianweidut.github.com">Tianwei</a> | Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>, <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> and <a href="http://pages.github.com/">GitHub Pages</a> | 版权声明：<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">CC BY-NC-SA 3.0</a> | <span class="label label-success">{{site.time | date:"%Y-%m-%d"}}</span></small></p>
+  		<p><small><a href="https://github.com/tianweidut/tianweidut.github.com">Created</a> by <a href="http://tianweidut.github.com">Tianwei</a> | <span class="label label-success">{{site.time | date:"%Y-%m-%d"}}</span></small></p>
 	</footer>      
     </div>
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-1988641-2']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
   </body>
 </html>

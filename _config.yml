@@ -3,6 +3,4 @@ permalink: /:year/:month/:title/
 url: http://tianweidut.github.com
 author: tianwei
 email: liutianweidlut@gmail.com
-disqusShortname: tianweidut
 pygments: true
-
