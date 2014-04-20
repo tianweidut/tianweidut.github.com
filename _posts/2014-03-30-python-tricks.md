@@ -31,7 +31,7 @@ tags:
     2. a = []; 如果 if a == []: 这个时可以进入if, 但是 if a is []: 这个就不会， if not a: 这个也可以进入判断
     3. is 与 == 的区别：
       1. is 是比较相同的对象实例
-      2. == 完全看 __eq__() 函数的实现
+      2. == 完全看 `__eq__()` 函数的实现
 
 9. isinstance 判断对象的类型
 10. 三元表达式技巧
@@ -143,7 +143,7 @@ tags:
     1. a,(b,c),d=[1,(2,3),4]
     2. a, b = b, a swap
 41. zip
-    1. a = [1,2,3]  b=[a,b,c]  c = zip(a,b) —> c :[(1,a), (2,b), (3,c)]; —> zip(*c) : [(1,2,3), (a,b,c)]
+    1. a = [1,2,3]  b=[a,b,c]  c = zip(a,b) —> c :[(1,a), (2,b), (3,c)]; —> zip(\*c) : [(1,2,3), (a,b,c)]
 42. flat list
     1. a=[[1,2],[3,4],[5,6]] —> [j for i in a for j in i]
     2. list(itertools.chain.from_iterable(a))
@@ -157,20 +157,23 @@ tags:
     5. tree = lambda: collections.defaultdict(tree); root = tree()  python的树结构
 45. 集合相乘
     1. forpinitertools.product([1,2,3],[4,5])
-    2. forpinitertools.product(*([[0,1]]*4)):  0000 —> 1111
+    2. forpinitertools.product(\*([[0,1]]\*4)):  0000 —> 1111
 46. python trick http://sahandsaba.com/thirty-python-language-features-and-tricks-you-may-not-know.html
-47. 使用列表推导式的一个问题是，会将所有的数据都载入内存，为了避免这种情况，使用generator 进行改造，(x**2 for x in a_list if x > 0) ,应该经常在代码中使用生成器表达式
+47. 使用列表推导式的一个问题是，会将所有的数据都载入内存，为了避免这种情况，使用generator 进行改造，(x**2 for x in a_list if x > 0) ,应该经常在代码中使用生成器表达式.
 48. 装饰器是一个包装了另一个函数的特殊函数：主函数被调用，并且其返回值将会被传给装饰器，接下来装饰器将返回一个包装了主函数的替代函数，程序的其他部分看到的将是这个包装函数.  @decorator 意味着分开执行了两部函数，如下：
-    ```
+
+    {% highlight python %}
     @timethis
     def run():
         pass
-    等价于 run = timethis(run)
-    ```
+    # 等价于 run = timethis(run)
+    {% endhighlight %}
+
 49. 上下文管理: contextlib 上下文管理器和with声明相关的工具
     1. 上下文管理器，需要定义一个类具有`__enter__`和`__exit__`方法。上下文管理器会被with所激活，对with块的入口点和出口点进行相应得处理。`__enter__`进入的时候会返回一个在上下文使用的对象。`__exit__`常做资源清理使用，如`with open('f.txt') as f: pass`
     2. 同时存在`@contextmanager`,可以将一个类快速变成`context manager object`,如下：
-        ```python
+
+        {% highlight python %}
         @contextmanager
         def demo(label):
             start = time.time()
@@ -180,8 +183,39 @@ tags:
                 end = time.time()
                 print 'Finish the task, use %s' % (end-start)
         # 也就是将yield之前的作为__enter__, yield之后的作为__exit__。
-        ```
+        {% endhighlight %}
 
 50. 描述器决定了对象属性是如何被访问的。描述器的作用是定制当你想引用一个属性时所发生的操作.`__get__`, `__set__`, `__del__` 三个操作
 51. MetaClass: 提供一个改变Python类行为的有效方法。MetaClass定义的是一个类的类。`type`就是一个元类，而且是python中最常见的元类，因为它使python中所有类的默认元类。
-52： http://coolshell.cn/articles/11265.html ，注意其中fib的cache，cache只会初始化一次，每个fib返回的都是wrapped，所以不用global变量
+52. http://coolshell.cn/articles/11265.html ，注意其中fib的cache，cache只会初始化一次，每个fib返回的都是wrapped，所以不用global变量
+53. subprocess: 用来spawn新的进程，并connect该进程的input/output/error pipe，获得returncode.
+  1. 替代：`os.system`, `os.spawn`, `os.popen`, `commands`, `popen2`
+  2. subprocess.call 等待subprocess执行结束，返回状态码
+  3. subprocess.check_calll 等待subprocess执行结束，返回状态码，当状态码非0时，抛出subprocess.CalledProcessError异常
+  4. subprocess.check_output 与check_call类似，但返回的是subprocess的输出
+  5. subprocess.CalledProcessError 在check_call和check_output返回非0状态码时，抛出该异常，有cmd, returncode, output三个参数可以使用
+  6. subprocess.popen 提供更复杂的构造函数，poll/wait/communicate/send_signal/terminate/kill
+  7. 常用的写法
+
+        {% highlight python %}
+        # old: replace shell
+        output = 'mycmd myargs'
+        # new
+        output = check_output(['mycmd', 'myargs'])
+
+        # replace shell pipeline
+        # output = 'dmesg | grep data'
+        p1 = check_output(['dmesg'], stdout=PIPE)
+        p2 = check_output(['grep', 'data'], stdin=p1.stdout, stdout=PIPE)
+        # p1调用close，需要在p2创建后，这样可以让p1在p2发生exit时，接受SIGPIPE信号
+        p1.stdout.close()
+        output = p2.communicate()[0] #communicate 返回(stdout, stderr)元组
+
+        # 以上方式也可以用:
+        output = check_output('dmesg | grep data', shell=True)
+
+        # old: os.system
+        status = os.system('mycmd myargs')
+        # new: call
+        status = subprocess.call('mycmd myargs', shell=True)
+        {% endhighlight %}
