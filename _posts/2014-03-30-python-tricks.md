@@ -219,3 +219,10 @@ tags:
         # new: call
         status = subprocess.call('mycmd myargs', shell=True)
         {% endhighlight %}
+54. multiprocess: 众所周知python的GIL机制，让thread在python中支持的并不好，使用多进程可以在一定程度上解决这个问题。multiprocess 提供一些列类似thread的接口，来
+操作多进程。
+  1. 支持两种进程间通信的方法：Queues(进程和线程安全的)和Pipes
+  2. 支持进程间的同步，可以使用Lock
+  3. 进程状态共享：实际上在并发编程中应该尽量减少状态的共享，使用Value和Array共享数据，同时他们是进程和线程安全的，还可以使用Manager()
+  4. Pool提供进程池
+  5. Process.join 用来block调用thread，直到该process发生terminated，一个进程可以被join多次；不能join self，会发生deadlock，也必须在start之后
